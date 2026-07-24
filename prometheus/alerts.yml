@@ -1,0 +1,15 @@
+groups:
+  - name: pqc-crosschain-alerts
+    rules:
+      - alert: HeartbeatDown
+        expr: time() - last_scrape_time{service="pqc-relayer"} > 90
+        for: 60s
+        labels: { severity: critical }
+      - alert: PQCVerificationFailRateHigh
+        expr: rate(pqc_verify_failures_total[5m]) / rate(pqc_verify_attempts_total[5m]) > 0.15
+        for: 10m
+        labels: { severity: warning }
+      - alert: RPCFailoverTriggered
+        expr: rpc_failover_count_total > 3
+        for: 2m
+        labels: { severity: high }
