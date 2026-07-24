@@ -1,0 +1,10 @@
+[target.'cfg(target_os = "solana")']
+rustflags = ["-C", "link-arg=-nostartfiles", "-C", "panic=abort", "-C", "opt-level=z"]
+
+[build]
+target = "wasm32-unknown-unknown"
+
+[profile.release]
+lto = true
+codegen-units = 1
+strip = true
