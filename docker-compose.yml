@@ -1,0 +1,24 @@
+version: '3.9'
+services:
+  relayer:
+    build: .
+    environment:
+      - RPC_URLS=${RPC_URLS}
+      - WS_URL=${WS_URL}
+      - PROGRAM_ID=${PROGRAM_ID}
+      - PROMETHEUS_PORT=${PROMETHEUS_PORT}
+    ports: ["${PROMETHEUS_PORT}:9090"]
+    volumes:
+      - ${HSM_PATH:-./hsm}:/opt/hsm:ro
+      - ./logs:/app/logs
+    restart: unless-stopped
+
+  prometheus:
+    image: prom/prometheus:latest
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prom_data:/prometheus
+    ports: ["9091:9090"]
+
+volumes:
+  prom_data:
