@@ -1,0 +1,20 @@
+[package]
+name = "pqc-bridge"
+version = "0.1.0"
+edition = "2021"
+description = "Post-Quantum Cross-Chain Bridge Anchor Program"
+
+[lib]
+crate-type = ["cdylib", "lib"]
+name = "pqc_bridge"
+
+[features]
+default = []
+cpi = ["no-entrypoint"]
+no-entrypoint = []
+governance = []
+
+[dependencies]
+anchor-lang = "0.30"
+spl-token-2022 = "6.0"
+sha2 = "0.10"
