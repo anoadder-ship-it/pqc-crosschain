@@ -1,0 +1,36 @@
+[workspace]
+members = ["anchor/programs/pqc_bridge"]
+resolver = "2"
+
+[package]
+name = "pqc-crosschain-core"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+pqcrypto-rs = { version = "0.3", features = ["kyber512", "dilithium_a2"] }
+zeroize = { version = "1.8", features = ["derive", "aarch64"] }
+getrandom = { version = "0.2", features = ["rdrand"] }
+hmac = "0.12"
+sha2 = "0.10"
+bitcoin = { version = "0.31", features = ["std", "rand-std"] }
+tokio = { version = "1.36", features = ["full", "tracing"] }
+thiserror = "1.0"
+serde_json = "1.0"
+reqwest = { version = "0.12", default-features = false, features = ["rustls-tls"] }
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+halo2_proofs = "0.3"
+halo2curves = "0.6"
+ff = "0.13"
+rand_core = "0.6"
+pkcs11 = { version = "0.4", optional = true }
+
+[dev-dependencies]
+solana-program-test = "1.18"
+anchor-lang = "0.30"
+criterion = "0.5"
+
+[[bench]]
+name = "pqc_benchmarks"
+harness = false
