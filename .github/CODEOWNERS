@@ -1,0 +1,20 @@
+# Dit bestand wijst automatische reviewers toe op basis van codemappen.
+
+# Algemene code en root-bestanden (standaard eigenaar)
+*                                       @anoadder-ship-it
+
+# Solana eBPF & Anchor Smart Contracts
+/anchor/                                @anoadder-ship-it @expert-solana
+/src/solana/                            @anoadder-ship-it @expert-solana
+
+# Cardano Plutus & Haskell Validator Scripts
+/cardano/                               @anoadder-ship-it @expert-cardano
+
+# Kern Cryptografie (KEM Kyber, Dilithium & Halo2 zk-SNARKs)
+/src/crypto/                            @anoadder-ship-it @expert-cryptography
+/src/lattice/                           @anoadder-ship-it @expert-cryptography
+
+# DevOps, Relayer-Infrastructuur en Monitoring Alerts
+/prometheus/                            @anoadder-ship-it @expert-devops
+/scripts/                               @anoadder-ship-it @expert-devops
+docker-compose.yml                      @anoadder-ship-it @expert-devops

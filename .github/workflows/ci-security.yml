@@ -1,0 +1,36 @@
+name: PQC Crosschain CI & Security Audit
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  audit-and-test:
+    name: Security Scan & Compilation
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    - name: Install Rust Toolchain
+      uses: dtolnay/rust-toolchain@stable
+      with:
+        components: clippy, rustfmt
+
+    - name: Cache Rust Dependencies
+      uses: swatinem/rust-cache@v2
+
+    - name: Check Code Formatting
+      run: cargo fmt --check
+
+    - name: Run Clippy (Static Application Security Testing)
+      run: cargo clippy -- -D warnings
+
+    - name: Run Security Vulnerability Audit (Cargo Audit)
+      run: |
+        cargo install cargo-audit
+        cargo audit
+
+    - name: Execute Cryptographic Benchmarks & Tests
+      run: cargo test --verbose
