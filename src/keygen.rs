@@ -1,5 +1,5 @@
-use pqcrypto_rs::kem::kyber512;
-use pqcrypto_rs::sign::dilithium_a2;
+use pqcrypto::kem::kyber512;
+use pqcrypto::sign::dilithium_a2;
 use zeroize::{Zeroize, Zeroizing};
 use getrandom::getrandom;
 use hmac::{Hmac, Mac};
