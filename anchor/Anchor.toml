@@ -1,0 +1,18 @@
+[programs.devnet]
+pqc_bridge = "PQC1x8v9K3mN2pL5qR7sT4uV6wX0yZ"
+
+[programs.localnet]
+pqc_bridge = "PQC1x8v9K3mN2pL5qR7sT4uV6wX0yZ"
+
+[features]
+seeds = true
+skip-lint = false
+
+[profile.dev]
+settings = { optimize = true }
+
+[profile.release]
+settings = { optimize = true }
+
+[profile.dev.build]
+build = "anchor/build"
