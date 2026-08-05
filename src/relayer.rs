@@ -3,6 +3,7 @@ use solana_sdk::{commitment_config::CommitmentConfig, signature::Keypair, signer
 use tokio::time::{interval, Duration};
 use std::sync::Arc;
 use thiserror::Error;
+use base64::{engine::general_purpose::STANDARD, Engine};
 
 #[derive(Error, Debug)]
 pub enum RelayerError {
@@ -117,10 +118,28 @@ pub struct LockEvent {
 }
 
 fn parse_lock_event(logs: &[String]) -> Result<LockEvent, Box<dyn std::error::Error>> {
-    Ok(LockEvent { 
-        tx_signature: "mock".into(), 
-        ct: vec![0u8; 768], 
-        lock_height: 12345,
-        target_chain: "btc".into()
+    // 1. Zoek naar de specifieke log string die door het Anchor programma wordt gegenereerd
+    let log_str = logs.iter()
+        .find(|l| l.contains("PQC_LOCK_EVENT"))
+        .ok_or("Geen PQC_LOCK_EVENT log gevonden")?;
+
+    // 2. Extraheer de JSON payload
+    let json_str = log_str.trim_start_matches("Program log: PQC_LOCK_EVENT:");
+    let event: serde_json::Value = serde_json::from_str(json_str)?;
+
+    // 3. Decodeer de ciphertext (Base64 -> Vec<u8>)
+    let ct_b64 = event["ct"].as_str().unwrap_or("");
+    let ct = STANDARD.decode(ct_b64)?;
+
+    // 4. Valideer Kyber-512 lengte (768 bytes)
+    if ct.len() != 768 {
+        return Err("Ongeldige Kyber-512 ciphertext lengte".into());
+    }
+
+    Ok(LockEvent {
+        tx_signature: event["tx_sig"].as_str().unwrap_or("").to_string(),
+        ct,
+        lock_height: event["height"].as_u64().unwrap_or(0),
+        target_chain: event["target"].as_str().unwrap_or("btc").to_string(),
     })
 }
