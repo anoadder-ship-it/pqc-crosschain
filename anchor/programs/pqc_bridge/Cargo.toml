@@ -18,3 +18,4 @@ governance = []
 anchor-lang = "0.30"
 spl-token-2022 = "6.0"
 sha2 = "0.10"
+pqcrypto-rs = { version = "0.3", features = ["kyber512", "dilithium_a2"] }
