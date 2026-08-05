@@ -1,5 +1,5 @@
 use anchor_lang::prelude::*;
-use pqcrypto_rs::sign::dilithium_a2;
+use pqcrypto::sign::dilithium_a2;
 use sha2::{Sha256, Digest};
 
 declare_id!("PQC1x8v9K3mN2pL5qR7sT4uV6wX0yZ");
