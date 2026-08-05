@@ -17,6 +17,7 @@ bitcoin = { version = "0.31", features = ["std", "rand-std"] }
 tokio = { version = "1.36", features = ["full", "tracing"] }
 thiserror = "1.0"
 serde_json = "1.0"
+base64 = "0.22"
 reqwest = { version = "0.12", default-features = false, features = ["rustls-tls"] }
 tracing = "0.1"
 tracing-subscriber = { version = "0.3", features = ["env-filter"] }
