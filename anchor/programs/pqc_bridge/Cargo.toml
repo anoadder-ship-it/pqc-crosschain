@@ -16,6 +16,6 @@ governance = []
 
 [dependencies]
 anchor-lang = "0.30"
-spl-token-2022 = "6.0"
+spl-token-22 = "6.0"
 sha2 = "0.10"
-pqcrypto-rs = { version = "0.3", features = ["kyber512", "dilithium_a2"] }
+pqcrypto = { version = "0.4", features = ["kyber512", "dilithium_a2"] }
