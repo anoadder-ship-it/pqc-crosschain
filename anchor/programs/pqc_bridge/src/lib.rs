@@ -1,4 +1,7 @@
 use anchor_lang::prelude::*;
+use pqcrypto_rs::sign::dilithium_a2;
+use sha2::{Sha256, Digest};
+
 declare_id!("PQC1x8v9K3mN2pL5qR7sT4uV6wX0yZ");
 
 #[program]
@@ -68,6 +71,19 @@ pub enum PqcError {
     PqcVerificationFailed = 4,
 }
 
-fn pqc_verify(_nonce: &[u8; 32], _ciphertext: &[u8; 768], _signature: &[u8; 1984]) -> Result<bool> {
-    Ok(true) // Placeholder voor inline assembly routine (~142k CU)
+#[inline(never)]
+pub fn pqc_verify(nonce: &[u8; 32], ciphertext: &[u8; 768], signature: &[u8; 1984]) -> Result<bool> {
+    // 1. Combineer nonce + ciphertext tot één message buffer (800 bytes)
+    let mut msg_buf = [0u8; 800];
+    msg_buf[..32].copy_from_slice(nonce);
+    msg_buf[32..].copy_from_slice(ciphertext);
+
+    // 2. Hash de gecombineerde data met SHA-256
+    let msg_hash = Sha256::digest(&msg_buf);
+
+    // 3. Verifieer Dilithium-A2 signature tegen de hash
+    match dilithium_a2::verify(&msg_hash, signature) {
+        Ok(()) => Ok(true),
+        Err(_) => Ok(false),
+    }
 }
